@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation template for Jurassic Park Incident Tracker RDS MySQL
+Resources:
+  RDSInstance:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBInstanceIdentifier: jurassic-rds
+      AllocatedStorage: 20
+      DBInstanceClass: db.t3.micro
+      Engine: mysql
+      EngineVersion: 8.0
+      MasterUsername: root
+      MasterUserPassword: topsecret
+      DBName: jurassic_park
+      VPCSecurityGroups:
+        - sg-xxxxxxxxxxxxxxxxx
+      DBSubnetGroupName: !Ref RDSSubnetGroup
+  RDSSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: Subnet group for Jurassic Park RDS
+      SubnetIds:
+        - subnet-xxxxxxxxxxxxxxxxx
+        - subnet-xxxxxxxxxxxxxxxxx
+Outputs:
+  RDSEndpoint:
+    Value: !GetAtt RDSInstance.Endpoint.Address

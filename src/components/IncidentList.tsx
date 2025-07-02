@@ -52,7 +52,7 @@ const IncidentList: React.FC<IncidentListProps> = ({
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-100 flex items-center">
           <AlertTriangle className="h-8 w-8 mr-3 text-amber-400" />
-          Incident Management
+          Gestion des incidents
         </h1>
         <div className="text-sm text-gray-400">
           {filteredIncidents.length} of {incidents.length} incidents
@@ -80,11 +80,11 @@ const IncidentList: React.FC<IncidentListProps> = ({
             value={filters.status}
             onChange={(e) => onFiltersChange({ ...filters, status: e.target.value })}
           >
-            <option value="">All Statuses</option>
-            <option value="OPEN">Open</option>
-            <option value="IN_PROGRESS">In Progress</option>
-            <option value="RESOLVED">Resolved</option>
-            <option value="CLOSED">Closed</option>
+            <option value="">Tous les statuts</option>
+            <option value="OPEN">Ouvert</option>
+            <option value="IN_PROGRESS">En cours</option>
+            <option value="RESOLVED">Résolu</option>
+            <option value="CLOSED">Fermé</option>
           </select>
           
           <select
@@ -92,11 +92,11 @@ const IncidentList: React.FC<IncidentListProps> = ({
             value={filters.severity}
             onChange={(e) => onFiltersChange({ ...filters, severity: e.target.value })}
           >
-            <option value="">All Severities</option>
-            <option value="CRITICAL">Critical</option>
-            <option value="HIGH">High</option>
-            <option value="MEDIUM">Medium</option>
-            <option value="LOW">Low</option>
+            <option value="">Toutes les gravités</option>
+            <option value="CRITICAL">Critique</option>
+            <option value="HIGH">Élevée</option>
+            <option value="MEDIUM">Moyenne</option>
+            <option value="LOW">Faible</option>
           </select>
           
           <select
@@ -104,13 +104,13 @@ const IncidentList: React.FC<IncidentListProps> = ({
             value={filters.category}
             onChange={(e) => onFiltersChange({ ...filters, category: e.target.value })}
           >
-            <option value="">All Categories</option>
-            <option value="SECURITY">Security</option>
+            <option value="">Toutes les catégories</option>
+            <option value="SECURITY">Sécurité</option>
             <option value="ANIMAL">Animal</option>
-            <option value="SYSTEM">System</option>
-            <option value="WEATHER">Weather</option>
-            <option value="MEDICAL">Medical</option>
-            <option value="OTHER">Other</option>
+            <option value="SYSTEM">Système</option>
+            <option value="WEATHER">Météo</option>
+            <option value="MEDICAL"> Médical</option>
+            <option value="OTHER">Autre</option>
           </select>
         </div>
       </div>
@@ -152,7 +152,7 @@ const IncidentList: React.FC<IncidentListProps> = ({
                   {incident.status.replace('_', ' ')}
                 </span>
                 <span className="text-xs text-gray-500">
-                  Emergency Level {incident.emergencyLevel}
+                   Niveau d’urgence {incident.emergencyLevel}
                 </span>
               </div>
             </div>
@@ -162,7 +162,7 @@ const IncidentList: React.FC<IncidentListProps> = ({
         {filteredIncidents.length === 0 && (
           <div className="text-center py-12 text-gray-400">
             <AlertTriangle className="h-12 w-12 mx-auto mb-4 opacity-50" />
-            <p>No incidents found matching your criteria.</p>
+            <p>Aucun incident ne correspond à vos critères.</p>
           </div>
         )}
       </div>

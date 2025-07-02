@@ -30,9 +30,9 @@ const Dashboard: React.FC<DashboardProps> = ({ incidents }) => {
       {/* Header */}
       <div className="text-center py-8 bg-gradient-to-r from-amber-900 to-amber-800 rounded-lg">
         <h1 className="text-4xl font-bold text-amber-100 mb-2">
-          Jurassic Park Command Center
+          Centre de Commandement de Jurassic Park
         </h1>
-        <p className="text-amber-200">Incident Management System</p>
+        <p className="text-amber-200">Système de gestion des incidents</p>
       </div>
 
       {/* Stats Cards */}
@@ -40,47 +40,47 @@ const Dashboard: React.FC<DashboardProps> = ({ incidents }) => {
         <div className="bg-red-900 border border-red-700 rounded-lg p-6 text-center">
           <AlertTriangle className="h-8 w-8 text-red-400 mx-auto mb-2" />
           <h3 className="text-2xl font-bold text-red-100">{criticalIncidents}</h3>
-          <p className="text-red-300 text-sm">Critical Incidents</p>
+          <p className="text-red-300 text-sm">Incidents critiques</p>
         </div>
         
         <div className="bg-amber-900 border border-amber-700 rounded-lg p-6 text-center">
           <Activity className="h-8 w-8 text-amber-400 mx-auto mb-2" />
           <h3 className="text-2xl font-bold text-amber-100">{openIncidents}</h3>
-          <p className="text-amber-300 text-sm">Open Incidents</p>
+          <p className="text-amber-300 text-sm">Incidents ouverts</p>
         </div>
         
         <div className="bg-green-900 border border-green-700 rounded-lg p-6 text-center">
           <TrendingUp className="h-8 w-8 text-green-400 mx-auto mb-2" />
           <h3 className="text-2xl font-bold text-green-100">{resolvedToday}</h3>
-          <p className="text-green-300 text-sm">Resolved Today</p>
+          <p className="text-green-300 text-sm">Résolus aujourd'hui</p>
         </div>
         
         <div className="bg-blue-900 border border-blue-700 rounded-lg p-6 text-center">
           <Users className="h-8 w-8 text-blue-400 mx-auto mb-2" />
           <h3 className="text-2xl font-bold text-blue-100">{incidents.length}</h3>
-          <p className="text-blue-300 text-sm">Total Incidents</p>
+          <p className="text-blue-300 text-sm">Nombre total d'incidents</p>
         </div>
       </div>
 
       {/* Severity Breakdown */}
       <div className="bg-gray-800 border border-gray-700 rounded-lg p-6">
-        <h2 className="text-xl font-semibold text-gray-100 mb-4">Severity Distribution</h2>
+        <h2 className="text-xl font-semibold text-gray-100 mb-4">Répartition par gravité</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="text-center">
             <div className="text-2xl font-bold text-red-400">{severityStats.CRITICAL}</div>
-            <div className="text-sm text-gray-400">Critical</div>
+            <div className="text-sm text-gray-400">Critique</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-orange-400">{severityStats.HIGH}</div>
-            <div className="text-sm text-gray-400">High</div>
+            <div className="text-sm text-gray-400">Élevé</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-yellow-400">{severityStats.MEDIUM}</div>
-            <div className="text-sm text-gray-400">Medium</div>
+            <div className="text-sm text-gray-400">Moyen</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-green-400">{severityStats.LOW}</div>
-            <div className="text-sm text-gray-400">Low</div>
+            <div className="text-sm text-gray-400">faible</div>
           </div>
         </div>
       </div>
@@ -89,7 +89,7 @@ const Dashboard: React.FC<DashboardProps> = ({ incidents }) => {
       <div className="bg-gray-800 border border-gray-700 rounded-lg p-6">
         <h2 className="text-xl font-semibold text-gray-100 mb-4 flex items-center">
           <Clock className="h-5 w-5 mr-2" />
-          Recent Incidents
+          Incidents récents
         </h2>
         <div className="space-y-3">
           {recentIncidents.map((incident) => (

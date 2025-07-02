@@ -53,7 +53,7 @@ const IncidentDetail: React.FC<IncidentDetailProps> = ({
           className="flex items-center text-gray-400 hover:text-gray-200 transition-colors"
         >
           <ArrowLeft className="h-5 w-5 mr-2" />
-          Back to Incidents
+          Retour aux incidents
         </button>
         
         <div className="flex space-x-2">
@@ -62,14 +62,14 @@ const IncidentDetail: React.FC<IncidentDetailProps> = ({
             className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors flex items-center"
           >
             <Edit className="h-4 w-4 mr-2" />
-            Edit
+            Modifier 
           </button>
           <button
             onClick={() => setShowDeleteConfirm(true)}
             className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center"
           >
             <Trash2 className="h-4 w-4 mr-2" />
-            Delete
+            Supprimer
           </button>
         </div>
       </div>
@@ -94,9 +94,9 @@ const IncidentDetail: React.FC<IncidentDetailProps> = ({
           
           <div className="text-right">
             <div className="text-2xl font-bold text-amber-400 mb-1">
-              Level {incident.emergencyLevel}
+              Niveau {incident.emergencyLevel}
             </div>
-            <div className="text-sm text-gray-400">Emergency Level</div>
+            <div className="text-sm text-gray-400">Niveau d’urgence</div>
           </div>
         </div>
 
@@ -118,7 +118,7 @@ const IncidentDetail: React.FC<IncidentDetailProps> = ({
             <div className="flex items-center text-gray-300">
               <User className="h-5 w-5 mr-3 text-gray-400" />
               <div>
-                <div className="font-medium">Assigned To</div>
+                <div className="font-medium">Attribué à</div>
                 <div className="text-sm text-gray-400">{incident.assignedTo}</div>
               </div>
             </div>
@@ -126,7 +126,7 @@ const IncidentDetail: React.FC<IncidentDetailProps> = ({
             <div className="flex items-center text-gray-300">
               <User className="h-5 w-5 mr-3 text-gray-400" />
               <div>
-                <div className="font-medium">Reported By</div>
+                <div className="font-medium">Signalé par</div>
                 <div className="text-sm text-gray-400">{incident.reportedBy}</div>
               </div>
             </div>
@@ -134,7 +134,7 @@ const IncidentDetail: React.FC<IncidentDetailProps> = ({
             <div className="flex items-center text-gray-300">
               <Calendar className="h-5 w-5 mr-3 text-gray-400" />
               <div>
-                <div className="font-medium">Created</div>
+                <div className="font-medium">Créé</div>
                 <div className="text-sm text-gray-400">{new Date(incident.createdAt).toLocaleString()}</div>
               </div>
             </div>
@@ -142,7 +142,7 @@ const IncidentDetail: React.FC<IncidentDetailProps> = ({
             <div className="flex items-center text-gray-300">
               <Calendar className="h-5 w-5 mr-3 text-gray-400" />
               <div>
-                <div className="font-medium">Last Updated</div>
+                <div className="font-medium">Dernière mise à jour</div>
                 <div className="text-sm text-gray-400">{new Date(incident.updatedAt).toLocaleString()}</div>
               </div>
             </div>
@@ -153,7 +153,7 @@ const IncidentDetail: React.FC<IncidentDetailProps> = ({
         <div className="border-t border-gray-700 pt-6">
           <h2 className="text-xl font-semibold text-gray-100 mb-4 flex items-center">
             <Activity className="h-5 w-5 mr-2" />
-            Update Status
+            Mettre à jour le statut
           </h2>
           <div className="flex space-x-3">
             {(['OPEN', 'IN_PROGRESS', 'RESOLVED', 'CLOSED'] as const).map(status => (
@@ -182,20 +182,20 @@ const IncidentDetail: React.FC<IncidentDetailProps> = ({
               <h3 className="text-lg font-semibold text-gray-100">Confirm Deletion</h3>
             </div>
             <p className="text-gray-300 mb-6">
-              Are you sure you want to delete this incident? This action cannot be undone.
+               Êtes-vous sûr de vouloir supprimer cet incident ? Cette action est irréversible.
             </p>
             <div className="flex justify-end space-x-3">
               <button
                 onClick={() => setShowDeleteConfirm(false)}
                 className="px-4 py-2 bg-gray-700 text-gray-300 rounded-lg hover:bg-gray-600 transition-colors"
               >
-                Cancel
+                Annuler
               </button>
               <button
                 onClick={handleDelete}
                 className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
               >
-                Delete
+                Supprimer
               </button>
             </div>
           </div>

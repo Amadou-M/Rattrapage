@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jurassic-backend
+  namespace: jurassic-park
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: jurassic-backend
+  template:
+    metadata:
+      labels:
+        app: jurassic-backend
+    spec:
+      containers:
+      - name: jurassic-backend
+        image: jurassic-backend:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: DATABASE_HOST
+          value: "jurassic-rds.cluster-xyz.eu-west-1.rds.amazonaws.com" # Endpoint RDS
+        - name: DATABASE_USER
+          valueFrom:
+            secretKeyRef:
+              name: jurassic-secrets
+              key: db-user
+        - name: DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: jurassic-secrets
+              key: db-password
+        - name: DATABASE_NAME
+          value: jurassic_park
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: jurassic-secrets
+              key: jwt-secret
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 15
+          periodSeconds: 10
+      imagePullPolicy: Always

@@ -19,24 +19,22 @@ API REST Node.js pour la gestion des incidents du parc Jurassic Park.
 ## 🛠️ Installation
 
 ### 1. Installation des dépendances
-```bash
 npm install
 ```
 
 ### 2. Configuration
 Copier `.env.example` vers `.env` et configurer:
-```bash
+
 cp .env.example .env
 ```
 
 ### 3. Base de données
-```bash
 # Créer la base de données
 mysql -u root -p < database/init.sql
 ```
 
 ### 4. Démarrage
-```bash
+
 # Développement
 npm run dev
 

@@ -44,7 +44,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange }) =>
         </div>
         
         <div className="text-sm text-gray-400">
-          System Status: <span className="text-green-400">ONLINE</span>
+          État du système: <span className="text-green-400">EN LIGNE</span>
         </div>
       </div>
     </nav>

@@ -63,7 +63,7 @@ const IncidentForm: React.FC<IncidentFormProps> = ({ incident, onSave, onCancel 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-300 mb-2">
-                Incident Title *
+                Titre de l’incident *
               </label>
               <input
                 type="text"
@@ -91,7 +91,7 @@ const IncidentForm: React.FC<IncidentFormProps> = ({ incident, onSave, onCancel 
 
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
-                Severity *
+                Gravité *
               </label>
               <select
                 required
@@ -99,16 +99,16 @@ const IncidentForm: React.FC<IncidentFormProps> = ({ incident, onSave, onCancel 
                 value={formData.severity}
                 onChange={(e) => handleChange('severity', e.target.value)}
               >
-                <option value="LOW">Low</option>
-                <option value="MEDIUM">Medium</option>
-                <option value="HIGH">High</option>
-                <option value="CRITICAL">Critical</option>
+                <option value="LOW">Faible</option>
+                <option value="MEDIUM">Moyenne</option>
+                <option value="HIGH">Élevée</option>
+                <option value="CRITICAL">Critique</option>
               </select>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
-                Category *
+                Catégorie *
               </label>
               <select
                 required
@@ -116,12 +116,12 @@ const IncidentForm: React.FC<IncidentFormProps> = ({ incident, onSave, onCancel 
                 value={formData.category}
                 onChange={(e) => handleChange('category', e.target.value)}
               >
-                <option value="SECURITY">Security</option>
+                <option value="SECURITY">Sécurité</option>
                 <option value="ANIMAL">Animal</option>
-                <option value="SYSTEM">System</option>
-                <option value="WEATHER">Weather</option>
-                <option value="MEDICAL">Medical</option>
-                <option value="OTHER">Other</option>
+                <option value="SYSTEM">Système</option>
+                <option value="WEATHER">Météo</option>
+                <option value="MEDICAL">Médical</option>
+                <option value="OTHER">Autre</option>
               </select>
             </div>
 
@@ -135,7 +135,7 @@ const IncidentForm: React.FC<IncidentFormProps> = ({ incident, onSave, onCancel 
                 value={formData.location}
                 onChange={(e) => handleChange('location', e.target.value)}
               >
-                <option value="">Select location</option>
+                <option value="">Sélectionner un emplacement</option>
                 {locations.map(location => (
                   <option key={location} value={location}>{location}</option>
                 ))}
@@ -144,7 +144,7 @@ const IncidentForm: React.FC<IncidentFormProps> = ({ incident, onSave, onCancel 
 
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
-                Assigned To *
+                Attribué à *
               </label>
               <select
                 required
@@ -152,7 +152,7 @@ const IncidentForm: React.FC<IncidentFormProps> = ({ incident, onSave, onCancel 
                 value={formData.assignedTo}
                 onChange={(e) => handleChange('assignedTo', e.target.value)}
               >
-                <option value="">Select staff member</option>
+                <option value="">Sélectionner un membre du personnel</option>
                 {staffMembers.map(staff => (
                   <option key={staff} value={staff}>{staff}</option>
                 ))}
@@ -161,7 +161,7 @@ const IncidentForm: React.FC<IncidentFormProps> = ({ incident, onSave, onCancel 
 
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-300 mb-2">
-                Emergency Level (1-5) *
+                Niveau d’urgence (1-5) *
               </label>
               <div className="flex space-x-4">
                 {[1, 2, 3, 4, 5].map(level => (
@@ -187,7 +187,7 @@ const IncidentForm: React.FC<IncidentFormProps> = ({ incident, onSave, onCancel 
               onClick={onCancel}
               className="px-6 py-3 bg-gray-700 text-gray-300 rounded-lg hover:bg-gray-600 transition-colors"
             >
-              Cancel
+              Annuler
             </button>
             <button
               type="submit"

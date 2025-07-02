@@ -1,0 +1,115 @@
+name: Pipeline CI/CD - Jurassic Park Incident Tracker
+
+# Déclencheurs : exécution sur push vers la branche main ou sur pull requests
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Variables d'environnement globales
+env:
+  AWS_REGION: eu-west-1
+  ECR_REPOSITORY_BACKEND: jurassic-backend
+  ECR_REPOSITORY_FRONTEND: jurassic-frontend
+  EKS_CLUSTER_NAME: jurassic-eks-cluster
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      # Cloner le dépôt
+      - name: Checkout du code
+        uses: actions/checkout@v3
+
+      # Configurer Node.js pour le backend
+      - name: Configurer Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # Installer les dépendances du backend
+      - name: Installer les dépendances du backend
+        working-directory: ./backend
+        run: npm install
+
+      # Exécuter les tests du backend
+      - name: Tester le backend
+        working-directory: ./backend
+        run: npm test
+        env:
+          DATABASE_HOST: localhost
+          DATABASE_USER: test
+          DATABASE_PASSWORD: test
+          DATABASE_NAME: jurassic_park_test
+          JWT_SECRET: testsecret
+
+      # Configurer Docker Buildx
+      - name: Configurer Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Connexion à Amazon ECR
+      - name: Connexion à Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          region: ${{ env.AWS_REGION }}
+
+      # Construire et pousser l'image Docker du backend
+      - name: Construire et pousser l'image Docker du backend
+        working-directory: ./backend
+        run: |
+          docker build -t ${{ env.ECR_REPOSITORY_BACKEND }}:latest .
+          docker tag ${{ env.ECR_REPOSITORY_BACKEND }}:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_BACKEND }}:latest
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_BACKEND }}:latest
+
+      # Construire et pousser l'image Docker du frontend
+      - name: Construire et pousser l'image Docker du frontend
+        working-directory: ./frontend
+        run: |
+          docker build -t ${{ env.ECR_REPOSITORY_FRONTEND }}:latest .
+          docker tag ${{ env.ECR_REPOSITORY_FRONTEND }}:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_FRONTEND }}:latest
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_FRONTEND }}:latest
+
+  deploy:
+    needs: test-and-build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      # Cloner le dépôt
+      - name: Checkout du code
+        uses: actions/checkout@v3
+
+      # Configurer AWS CLI
+      - name: Configurer AWS CLI
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      # Mettre à jour la configuration kubectl pour EKS
+      - name: Configurer kubectl
+        run: |
+          aws eks update-kubeconfig --name ${{ env.EKS_CLUSTER_NAME }} --region ${{ env.AWS_REGION }}
+
+      # Déployer les manifestes Kubernetes
+      - name: Déployer sur EKS
+        run: |
+          kubectl apply -f k8s/namespace.yaml
+          kubectl apply -f k8s/secrets.yaml
+          kubectl apply -f k8s/backend-deployment.yaml
+          kubectl apply -f k8s/backend-service.yaml
+          kubectl apply -f k8s/frontend-deployment.yaml
+          kubectl apply -f k8s/frontend-service.yaml
+          kubectl apply -f k8s/ingress.yaml
+        env:
+          KUBECONFIG: ~/.kube/config
+
+      # Vérifier le déploiement
+      - name: Vérifier le déploiement
+        run: |
+          kubectl rollout status deployment/jurassic-backend -n jurassic-park
+          kubectl rollout status deployment/jurassic-frontend -n jurassic-park
+          kubectl get ingress -n jurassic-park
