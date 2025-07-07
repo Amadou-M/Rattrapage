@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jurassic Park - Incident Tracker</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦕</text></svg>">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Jurassic Park</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#" class="nav-link active" data-view="dashboard">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+                <a href="#" class="nav-link" data-view="incidents">
+                    <i class="fas fa-list"></i> Incidents
+                </a>
+                <a href="#" class="nav-link" data-view="create">
+                    <i class="fas fa-plus"></i> Nouveau
+                </a>
+            </div>
+            <div class="nav-status">
+                <span class="status-indicator online"></span>
+                <span>SYSTÈME EN LIGNE</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenu principal -->
+    <main class="main-content">
+        <!-- Dashboard -->
+        <div id="dashboard-view" class="view active">
+            <div class="hero-section">
+                <h1>Centre de Commande Jurassic Park</h1>
+                <p>Système de Gestion des Incidents</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card critical">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3 id="critical-count">0</h3>
+                    <p>Incidents Critiques</p>
+                </div>
+                <div class="stat-card warning">
+                    <i class="fas fa-clock"></i>
+                    <h3 id="open-count">0</h3>
+                    <p>Incidents Ouverts</p>
+                </div>
+                <div class="stat-card success">
+                    <i class="fas fa-check-circle"></i>
+                    <h3 id="resolved-count">0</h3>
+                    <p>Résolus Aujourd'hui</p>
+                </div>
+                <div class="stat-card info">
+                    <i class="fas fa-chart-bar"></i>
+                    <h3 id="total-count">0</h3>
+                    <p>Total Incidents</p>
+                </div>
+            </div>
+
+            <div class="dashboard-content">
+                <div class="recent-incidents">
+                    <h2><i class="fas fa-history"></i> Incidents Récents</h2>
+                    <div id="recent-incidents-list" class="incidents-list">
+                        <!-- Chargé dynamiquement -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Liste des incidents -->
+        <div id="incidents-view" class="view">
+            <div class="view-header">
+                <h1><i class="fas fa-exclamation-triangle"></i> Gestion des Incidents</h1>
+                <div class="incident-count">
+                    <span id="incident-count">0 incidents</span>
+                </div>
+            </div>
+
+            <!-- Filtres -->
+            <div class="filters-section">
+                <h3><i class="fas fa-filter"></i> Filtres</h3>
+                <div class="filters-grid">
+                    <input type="text" id="search-filter" placeholder="Rechercher...">
+                    <select id="status-filter">
+                        <option value="">Tous les statuts</option>
+                        <option value="OPEN">Ouvert</option>
+                        <option value="IN_PROGRESS">En cours</option>
+                        <option value="RESOLVED">Résolu</option>
+                        <option value="CLOSED">Fermé</option>
+                    </select>
+                    <select id="severity-filter">
+                        <option value="">Toutes les sévérités</option>
+                        <option value="CRITICAL">Critique</option>
+                        <option value="HIGH">Élevée</option>
+                        <option value="MEDIUM">Moyenne</option>
+                        <option value="LOW">Faible</option>
+                    </select>
+                    <select id="category-filter">
+                        <option value="">Toutes les catégories</option>
+                        <option value="SECURITY">Sécurité</option>
+                        <option value="ANIMAL">Animal</option>
+                        <option value="SYSTEM">Système</option>
+                        <option value="WEATHER">Météo</option>
+                        <option value="MEDICAL">Médical</option>
+                        <option value="OTHER">Autre</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Liste -->
+            <div id="incidents-list" class="incidents-list">
+                <!-- Chargé dynamiquement -->
+            </div>
+        </div>
+
+        <!-- Formulaire de création/édition -->
+        <div id="form-view" class="view">
+            <div class="form-container">
+                <div class="form-header">
+                    <h1 id="form-title"><i class="fas fa-plus"></i> Nouvel Incident</h1>
+                    <button id="form-close" class="btn-close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <form id="incident-form">
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="title">Titre de l'incident *</label>
+                            <input type="text" id="title" name="title" required>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="description">Description *</label>
+                            <textarea id="description" name="description" rows="4" required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="severity">Sévérité *</label>
+                            <select id="severity" name="severity" required>
+                                <option value="LOW">Faible</option>
+                                <option value="MEDIUM" selected>Moyenne</option>
+                                <option value="HIGH">Élevée</option>
+                                <option value="CRITICAL">Critique</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="category">Catégorie *</label>
+                            <select id="category" name="category" required>
+                                <option value="SECURITY">Sécurité</option>
+                                <option value="ANIMAL">Animal</option>
+                                <option value="SYSTEM">Système</option>
+                                <option value="WEATHER">Météo</option>
+                                <option value="MEDICAL">Médical</option>
+                                <option value="OTHER" selected>Autre</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="location">Localisation *</label>
+                            <select id="location" name="location" required>
+                                <option value="">Sélectionner...</option>
+                                <option value="Sector 7 - Velociraptor Paddock">Secteur 7 - Enclos Vélociraptors</option>
+                                <option value="Main Power Station">Station Électrique Principale</option>
+                                <option value="T-Rex Paddock">Enclos T-Rex</option>
+                                <option value="Herbivore Valley">Vallée des Herbivores</option>
+                                <option value="Control Room">Salle de Contrôle</option>
+                                <option value="Visitor Center">Centre des Visiteurs</option>
+                                <option value="Brachiosaur Lagoon">Lagon des Brachiosaures</option>
+                                <option value="Gallimimus Plains">Plaines des Gallimimus</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="assignedTo">Assigné à *</label>
+                            <select id="assignedTo" name="assignedTo" required>
+                                <option value="">Sélectionner...</option>
+                                <option value="Robert Muldoon">Robert Muldoon</option>
+                                <option value="Ray Arnold">Ray Arnold</option>
+                                <option value="Dr. Ellie Sattler">Dr. Ellie Sattler</option>
+                                <option value="Dr. Alan Grant">Dr. Alan Grant</option>
+                                <option value="John Hammond">John Hammond</option>
+                                <option value="Dr. Ian Malcolm">Dr. Ian Malcolm</option>
+                                <option value="Security Team Alpha">Équipe Sécurité Alpha</option>
+                                <option value="Maintenance Team">Équipe Maintenance</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>Niveau d'urgence (1-5) *</label>
+                            <div class="emergency-levels">
+                                <label><input type="radio" name="emergencyLevel" value="1"> 1</label>
+                                <label><input type="radio" name="emergencyLevel" value="2"> 2</label>
+                                <label><input type="radio" name="emergencyLevel" value="3" checked> 3</label>
+                                <label><input type="radio" name="emergencyLevel" value="4"> 4</label>
+                                <label><input type="radio" name="emergencyLevel" value="5"> 5</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" id="form-cancel" class="btn btn-secondary">Annuler</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Enregistrer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Détail d'un incident -->
+        <div id="detail-view" class="view">
+            <div class="detail-container">
+                <div class="detail-header">
+                    <button id="detail-back" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Retour
+                    </button>
+                    <div class="detail-actions">
+                        <button id="detail-edit" class="btn btn-warning">
+                            <i class="fas fa-edit"></i> Modifier
+                        </button>
+                        <button id="detail-delete" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Supprimer
+                        </button>
+                    </div>
+                </div>
+
+                <div id="incident-detail" class="incident-detail">
+                    <!-- Chargé dynamiquement -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de confirmation -->
+    <div id="confirm-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> Confirmation</h3>
+            </div>
+            <div class="modal-body">
+                <p id="confirm-message">Êtes-vous sûr de vouloir effectuer cette action ?</p>
+            </div>
+            <div class="modal-actions">
+                <button id="confirm-cancel" class="btn btn-secondary">Annuler</button>
+                <button id="confirm-ok" class="btn btn-danger">Confirmer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading spinner -->
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <p>Chargement...</p>
+    </div>
+
+    <!-- Toast notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

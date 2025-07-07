@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+  # Base de données MySQL
+  mysql:
+    image: mysql:8.0
+    container_name: jurassic_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: jurassic_incidents
+      MYSQL_USER: jurassic_user
+      MYSQL_PASSWORD: secure_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./backend/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - jurassic_network
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ../docker/backend/Dockerfile
+    container_name: jurassic_backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: jurassic_incidents
+      DB_USER: jurassic_user
+      DB_PASSWORD: secure_password
+      JWT_SECRET: your_super_secret_jwt_key_here
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mysql
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - jurassic_network
+
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../docker/frontend/Dockerfile
+    container_name: jurassic_frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - jurassic_network
+
+  # phpMyAdmin (pour développement)
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: jurassic_phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: jurassic_user
+      PMA_PASSWORD: secure_password
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
+    networks:
+      - jurassic_network
+
+volumes:
+  mysql_data:
+
+networks:
+  jurassic_network:
+    driver: bridge
